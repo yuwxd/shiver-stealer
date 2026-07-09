@@ -17,7 +17,7 @@ echo                 SSSS   H   H  IIIII    V    EEEEE  R   R
 echo.
 echo            ==================================================
 echo              SHIVER - ULTIMATE MULTI-STEALER
-echo              45 Browsers | Discord | Crypto | Gaming
+echo              45 Browsers ^| Discord ^| Crypto ^| Gaming
 echo            ==================================================
 echo.
 echo            ==================================================
