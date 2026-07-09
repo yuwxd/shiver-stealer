@@ -14,7 +14,7 @@
 
 ## Overview
 
-Shiver Stealer is a sophisticated, production-ready information gathering utility designed for educational and authorized security assessment purposes. Built with Python and compiled to a standalone executable, it provides comprehensive data collection capabilities across multiple attack vectors while maintaining operational stealth through advanced obfuscation and anti-detection mechanisms.
+Shiver Stealer is a sophisticated, open-source information gathering utility designed for educational and authorized security assessment purposes. Built with Python and compiled to a standalone executable, it provides comprehensive data collection capabilities across multiple attack vectors while maintaining operational stealth through advanced obfuscation and anti-detection mechanisms.
 
 ## Features
 
