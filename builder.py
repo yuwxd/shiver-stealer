@@ -356,16 +356,19 @@ class Builder:
 
     def compile_to_exe(self, stub_code):
         try:
-            build_dir = os.path.join(os.getcwd(), 'shiver_build_temp')
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            build_dir = os.path.join(script_dir, 'shiver_build_temp')
+            output_dir = os.path.join(script_dir, 'build')
             if os.path.exists(build_dir):
                 shutil.rmtree(build_dir, ignore_errors=True)
             os.makedirs(build_dir)
+            os.makedirs(output_dir, exist_ok=True)
 
             stub_path = os.path.join(build_dir, 'shiver_stub.py')
             with open(stub_path, 'w', encoding='utf-8') as f:
                 f.write(stub_code)
 
-            core_src = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'core')
+            core_src = os.path.join(script_dir, 'core')
             core_dst = os.path.join(build_dir, 'core')
             if os.path.exists(core_dst):
                 shutil.rmtree(core_dst)
@@ -376,7 +379,7 @@ class Builder:
                 sys.executable, '-m', 'PyInstaller',
                 '--onefile', '--noconsole',
                 '--name', self.config['output_name'],
-                '--distpath', os.getcwd(),
+                '--distpath', output_dir,
                 '--workpath', os.path.join(build_dir, 'pyi_build'),
                 '--specpath', build_dir,
                 '--collect-submodules', 'core',
@@ -405,7 +408,7 @@ class Builder:
 
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
 
-            out_exe = os.path.join(os.getcwd(), self.config['output_name'] + '.exe')
+            out_exe = os.path.join(output_dir, self.config['output_name'] + '.exe')
             if os.path.exists(out_exe):
                 size_kb = os.path.getsize(out_exe) / 1024
                 print(colorize('\n    [+] SUCCESS! Stub built: ', 'green') + colorize(out_exe, 'yellow'))
@@ -417,16 +420,6 @@ class Builder:
                     print(result.stderr[-1500:] if result.stderr else '')
 
             shutil.rmtree(build_dir, ignore_errors=True)
-            for extra in ['__pycache__', 'build', 'shiver_stub.spec']:
-                p = os.path.join(os.getcwd(), extra)
-                if os.path.exists(p):
-                    try:
-                        if os.path.isdir(p):
-                            shutil.rmtree(p, ignore_errors=True)
-                        else:
-                            os.remove(p)
-                    except:
-                        pass
         except subprocess.TimeoutExpired:
             print(colorize('\n    [!] Build timed out (10 minutes)', 'red'))
         except Exception as e:
