@@ -44,20 +44,53 @@ class SystemInfo:
 
     def get_windows_version(self):
         try:
+            import winreg
+            rkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\Windows NT\CurrentVersion')
+            product_name = winreg.QueryValueEx(rkey, 'ProductName')[0]
+            try:
+                current_build = winreg.QueryValueEx(rkey, 'CurrentBuild')[0]
+                if current_build and current_build.isdigit() and int(current_build) >= 22000:
+                    product_name = product_name.replace('Windows 10', 'Windows 11')
+            except:
+                pass
+            try:
+                edition_id = winreg.QueryValueEx(rkey, 'EditionID')[0]
+                if edition_id:
+                    mapping = {
+                        'Core': 'Home', 'CoreSingleLanguage': 'Home', 'CoreN': 'Home N',
+                        'Professional': 'Pro', 'ProfessionalN': 'Pro N',
+                        'Enterprise': 'Enterprise', 'Education': 'Education',
+                        'ProfessionalWorkstation': 'Pro Workstation',
+                    }
+                    for eid, label in mapping.items():
+                        if edition_id.startswith(eid):
+                            if label not in product_name:
+                                product_name += ' ' + label
+                            break
+            except:
+                pass
+            winreg.CloseKey(rkey)
+            return str(product_name)
+        except:
+            pass
+        try:
             output = subprocess.check_output('wmic os get Caption', shell=True, stderr=subprocess.DEVNULL).decode(errors='ignore')
             for line in output.split('\n'):
                 line = line.strip()
                 if 'Windows' in line:
+                    ver = platform.version()
+                    parts = ver.split('.')
+                    if len(parts) >= 3 and parts[2].isdigit() and int(parts[2]) >= 22000:
+                        return line.replace('Windows 10', 'Windows 11')
                     return line
-            return platform.platform()
         except:
             pass
         try:
-            import winreg
-            key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\Windows NT\CurrentVersion')
-            product_name = winreg.QueryValueEx(key, 'ProductName')[0]
-            winreg.CloseKey(key)
-            return str(product_name)
+            ver = platform.version()
+            parts = ver.split('.')
+            if len(parts) >= 3 and parts[2].isdigit() and int(parts[2]) >= 22000:
+                return 'Windows 11 (build ' + ver + ')'
+            return 'Windows 10 (build ' + ver + ')'
         except:
             return platform.platform()
 

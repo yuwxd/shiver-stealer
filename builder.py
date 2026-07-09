@@ -386,7 +386,6 @@ class Builder:
                 '--collect-submodules', 'core',
                 '--collect-submodules', 'Crypto',
                 '--collect-submodules', 'PIL',
-                '--copy-metadata', 'psutil',
                 '--add-data', core_dst + os.pathsep + 'core',
                 '--hidden-import', 'requests',
                 '--hidden-import', 'Crypto',
