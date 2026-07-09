@@ -204,19 +204,61 @@ def get_hwid():
     except:
         return 'Unknown'
 
+DEFAULT_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+
+def http_request(url, method='GET', data=None, headers=None, timeout=30):
+    try:
+        import urllib.request
+        hdrs = {'User-Agent': DEFAULT_UA}
+        if headers:
+            hdrs.update(headers)
+        req = urllib.request.Request(url, data=data, headers=hdrs, method=method)
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return resp.status, resp.read()
+    except Exception as e:
+        try:
+            return getattr(e, 'code', 0), getattr(e, 'read', lambda: b'')()
+        except:
+            return 0, b''
+
+def http_post_json(url, json_data, timeout=30):
+    body = json.dumps(json_data).encode('utf-8')
+    return http_request(url, 'POST', body, {'Content-Type': 'application/json'}, timeout)
+
+def http_post_multipart(url, fields, files, timeout=30):
+    import uuid
+    boundary = '----' + uuid.uuid4().hex
+    body = bytearray()
+    for key, value in fields.items():
+        body.extend(b'--' + boundary.encode() + b'\r\n')
+        body.extend(b'Content-Disposition: form-data; name="' + key.encode() + b'"\r\n\r\n')
+        body.extend(str(value).encode('utf-8') + b'\r\n')
+    for name, (filename, filebytes, content_type) in files:
+        body.extend(b'--' + boundary.encode() + b'\r\n')
+        body.extend(b'Content-Disposition: form-data; name="' + name.encode() + b'"; filename="' + filename.encode() + b'"\r\n')
+        body.extend(b'Content-Type: ' + content_type.encode() + b'\r\n\r\n')
+        body.extend(filebytes + b'\r\n')
+    body.extend(b'--' + boundary.encode() + b'--\r\n')
+    headers = {'Content-Type': 'multipart/form-data; boundary=' + boundary}
+    return http_request(url, 'POST', bytes(body), headers, timeout)
+
+def http_get(url, headers=None, timeout=30):
+    return http_request(url, 'GET', None, headers, timeout)
+
 def get_ip_geo():
-    import requests
     urls = ['https://ip-api.com/json/', 'http://ip-api.com/json/']
     for url in urls:
         try:
-            r = requests.get(url, timeout=10)
-            data = r.json()
-            if data.get('status') == 'success' or 'query' in data:
-                return (data.get('query', 'Unknown'), data.get('country', 'Unknown'),
-                        data.get('city', 'Unknown'), data.get('isp', 'Unknown'),
-                        data.get('org', 'Unknown'), data.get('as', 'Unknown'),
-                        data.get('regionName', 'Unknown'), data.get('zip', 'Unknown'),
-                        data.get('lat', 0), data.get('lon', 0))
+            code, data = http_get(url, timeout=10)
+            if code != 200:
+                continue
+            info = json.loads(data.decode('utf-8'))
+            if info.get('status') == 'success' or 'query' in info:
+                return (info.get('query', 'Unknown'), info.get('country', 'Unknown'),
+                        info.get('city', 'Unknown'), info.get('isp', 'Unknown'),
+                        info.get('org', 'Unknown'), info.get('as', 'Unknown'),
+                        info.get('regionName', 'Unknown'), info.get('zip', 'Unknown'),
+                        info.get('lat', 0), info.get('lon', 0))
         except:
             continue
     return ('Unknown',) * 10

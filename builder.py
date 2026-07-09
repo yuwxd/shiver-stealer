@@ -55,10 +55,6 @@ def save_config(config):
 def check_dependencies():
     missing = []
     try:
-        import requests
-    except:
-        missing.append('requests')
-    try:
         from Crypto.Cipher import AES
     except:
         missing.append('pycryptodome')
@@ -386,7 +382,6 @@ class Builder:
                 '--collect-submodules', 'Crypto',
                 '--collect-submodules', 'PIL',
                 '--add-data', core_dst + os.pathsep + 'core',
-                '--hidden-import', 'requests',
                 '--hidden-import', 'Crypto',
                 '--hidden-import', 'Crypto.Cipher',
                 '--hidden-import', 'Crypto.Cipher.AES',

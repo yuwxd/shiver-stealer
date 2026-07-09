@@ -1,8 +1,8 @@
 import os
 import json
 import time
-import requests
 from datetime import datetime
+from . import utils
 
 class Webhook:
     def __init__(self, webhook_url):
@@ -16,21 +16,21 @@ class Webhook:
             if embed:
                 payload['embeds'] = embed if isinstance(embed, list) else [embed]
             if file_paths:
-                files = []
+                file_list = []
                 for fp in file_paths:
                     if os.path.exists(fp):
-                        files.append(('file', (os.path.basename(fp), open(fp, 'rb'), 'application/octet-stream')))
-                if files:
+                        with open(fp, 'rb') as f:
+                            file_list.append(('file', (os.path.basename(fp), f.read(), 'application/octet-stream')))
+                if file_list:
                     if payload:
-                        r = requests.post(self.webhook_url, data={'payload_json': json.dumps(payload)}, files=files, timeout=30)
+                        fields = {'payload_json': json.dumps(payload)}
+                        code, _ = utils.http_post_multipart(self.webhook_url, fields, file_list, 30)
                     else:
-                        r = requests.post(self.webhook_url, files=files, timeout=30)
-                    for _, f in files:
-                        f[1].close()
-                    return r.status_code in (200, 204)
+                        code, _ = utils.http_post_multipart(self.webhook_url, {}, file_list, 30)
+                    return code in (200, 204)
             if payload:
-                r = requests.post(self.webhook_url, json=payload, timeout=30)
-                return r.status_code in (200, 204)
+                code, _ = utils.http_post_json(self.webhook_url, payload, 30)
+                return code in (200, 204)
             return False
         except:
             return False

