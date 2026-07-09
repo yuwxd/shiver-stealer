@@ -10,27 +10,26 @@ class Webhook:
 
     def send(self, content=None, embed=None, file_paths=None):
         try:
-            data = {}
+            payload = {}
             if content:
-                data['content'] = content
+                payload['content'] = content
             if embed:
-                data['embeds'] = embed if isinstance(embed, list) else [embed]
+                payload['embeds'] = embed if isinstance(embed, list) else [embed]
             if file_paths:
                 files = []
                 for fp in file_paths:
                     if os.path.exists(fp):
                         files.append(('file', (os.path.basename(fp), open(fp, 'rb'), 'application/octet-stream')))
                 if files:
-                    if data:
-                        data['payload_json'] = json.dumps(data)
-                        r = requests.post(self.webhook_url, data=data, files=files, timeout=30)
+                    if payload:
+                        r = requests.post(self.webhook_url, data={'payload_json': json.dumps(payload)}, files=files, timeout=30)
                     else:
                         r = requests.post(self.webhook_url, files=files, timeout=30)
                     for _, f in files:
                         f[1].close()
                     return r.status_code in (200, 204)
-            if data:
-                r = requests.post(self.webhook_url, json=data, timeout=30)
+            if payload:
+                r = requests.post(self.webhook_url, json=payload, timeout=30)
                 return r.status_code in (200, 204)
             return False
         except:
