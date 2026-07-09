@@ -36,7 +36,7 @@ Shiver Stealer is a sophisticated, open-source information gathering utility des
 
 ### Discord Token Acquisition
 
-**Supported Clients (19 Total)**
+**Supported Clients (9 Total)**
 
 Discord, Discord Canary, Discord PTB, Discord Development, Lightcord, Vesktop, Vencord, Nightcord, ArmCord
 
