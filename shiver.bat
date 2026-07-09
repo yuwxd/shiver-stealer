@@ -2,11 +2,11 @@
 cd /d "%~dp0"
 chcp 65001 >nul 2>&1
 mode con lines=42 cols=110
-title Shiver Stealer Builder v2.0
+title Shiver Stealer Builder
 
 :menu
 cd /d "%~dp0"
-chcp 65001 > nul
+chcp 65001 >nul 2>&1
 cls
 echo.
 echo                 SSSSS  H   H  IIIII  V   V  EEEEE  RRRR
@@ -16,7 +16,7 @@ echo                    S   H   H    I     V V   E      R  R
 echo                 SSSS   H   H  IIIII    V    EEEEE  R   R
 echo.
 echo            ==================================================
-echo              SHIVER - ULTIMATE MULTI-STEALER v2.0
+echo              SHIVER - ULTIMATE MULTI-STEALER
 echo              45 Browsers | Discord | Crypto | Gaming
 echo            ==================================================
 echo.
@@ -36,7 +36,10 @@ if /i "%choice%"=="1" (
 ) else if /i "%choice%"=="3" (
     goto about
 ) else if /i "%choice%"=="4" (
-    exit
+    echo.
+    echo             Exiting... close this window or press any key to return.
+    pause >nul
+    goto menu
 ) else (
     goto menu
 )
@@ -51,8 +54,8 @@ echo            ==================================================
 echo.
 python builder.py
 echo.
-echo             Return to main menu...
-timeout /t 2 >nul
+echo             Press any key to return to main menu...
+pause >nul
 goto menu
 
 :deps
@@ -77,7 +80,7 @@ cd /d "%~dp0"
 cls
 echo.
 echo            ==================================================
-echo                       SHIVER STEALER v2.0
+echo                       SHIVER STEALER
 echo            ==================================================
 echo.
 echo             Features:
