@@ -8,6 +8,9 @@ import random
 import string
 import tempfile
 
+if os.name == 'nt':
+    os.system('')
+
 CONFIG_FILE = 'shiver_config.json'
 
 COLORS = {
@@ -105,9 +108,9 @@ class Builder:
             self.print_banner()
             self.print_config_status()
             print()
-            print(colorize('    +----------------------------------------------------------+', 'cyan'))
-            print(colorize('    ¦', 'cyan') + colorize('              SHIVER BUILDER MENU', 'bold') + colorize('                    ¦', 'cyan'))
-            print(colorize('    +----------------------------------------------------------+', 'cyan'))
+            print(colorize('    ==================================================', 'cyan'))
+            print(colorize('              SHIVER BUILDER MENU', 'bold'))
+            print(colorize('    ==================================================', 'cyan'))
             print()
             print(colorize('    [1]', 'yellow') + colorize(' Set Webhook URL', 'white'))
             print(colorize('    [2]', 'yellow') + colorize(' Toggle Obfuscation', 'white'))
@@ -159,49 +162,48 @@ class Builder:
     def print_banner(self):
         banner = colorize('''
     +----------------------------------------------------------+
-    ¦                                                          ¦
-    ¦   ¦¦¦¦¦¦¦+¦¦+  ¦¦+¦¦+¦¦+     ¦¦+     ¦¦¦¦¦¦¦+           ¦
-    ¦   ¦¦+----+¦¦¦ ¦¦++¦¦¦¦¦¦     ¦¦¦     ¦¦+----+           ¦
-    ¦   ¦¦¦¦¦¦¦+¦¦¦¦¦++ ¦¦¦¦¦¦     ¦¦¦     ¦¦¦¦¦¦¦+           ¦
-    ¦   ----¦¦¦¦¦+-¦¦+ ¦¦¦¦¦¦     ¦¦¦     +----¦¦¦           ¦
-    ¦   ¦¦¦¦¦¦¦¦¦¦¦  ¦¦+¦¦¦¦¦¦¦¦¦¦+¦¦¦¦¦¦¦+¦¦¦¦¦¦¦¦           ¦
-    ¦   +------+-+  +-++-++------++------++------+           ¦
-    ¦                                                          
-    ¦              ULTIMATE MULTI-FEATURE STEALER              ¦
-    ¦                                                          ¦
+    |                                                          |
+    |   SSSSS  H   H  IIIII  V   V  EEEEE  RRRR               |
+    |   S      H   H    I    V   V  E      R   R              |
+    |   SSS    HHHHH    I    V   V  EEE    RRRR               |
+    |      S   H   H    I     V V   E      R  R               |
+    |   SSSS   H   H  IIIII    V    EEEEE  R   R              |
+    |                                                          |
+    |         ULTIMATE MULTI-FEATURE STEALER                  |
+    |                                                          |
     +----------------------------------------------------------+
 ''', 'cyan')
         print(banner)
 
     def print_config_status(self):
-        print(colorize('    +---------------------------------------------------------+', 'blue'))
-        print(colorize('    ¦', 'blue') + colorize(' CONFIGURATION', 'bold') + colorize('                                        ¦', 'blue'))
-        print(colorize('    +---------------------------------------------------------¦', 'blue'))
+        print(colorize('    --------------------------------------------------', 'blue'))
+        print(colorize('    CONFIGURATION', 'bold'))
+        print(colorize('    --------------------------------------------------', 'blue'))
         
         webhook_status = colorize('SET', 'green') if self.config['webhook'] else colorize('NOT SET', 'red')
-        print(colorize('    ¦', 'blue') + colorize(' Webhook    : ', 'white') + webhook_status + colorize(' ' * (42 - len(webhook_status.replace('\033[0m', '').replace('\033[92m', '').replace('\033[91m', ''))), 'blue') + colorize('¦', 'blue'))
+        print(colorize('    Webhook    : ', 'white') + webhook_status)
         
         obf_status = colorize('ENABLED', 'green') if self.config['obfuscation'] else colorize('DISABLED', 'red')
-        print(colorize('    ¦', 'blue') + colorize(' Obfuscation: ', 'white') + obf_status + colorize(' ' * (42 - len(obf_status.replace('\033[0m', '').replace('\033[92m', '').replace('\033[91m', ''))), 'blue') + colorize('¦', 'blue'))
+        print(colorize('    Obfuscation: ', 'white') + obf_status)
         
         startup_status = colorize('ENABLED', 'green') if self.config['startup'] else colorize('DISABLED', 'red')
-        print(colorize('    ¦', 'blue') + colorize(' Startup    : ', 'white') + startup_status + colorize(' ' * (42 - len(startup_status.replace('\033[0m', '').replace('\033[92m', '').replace('\033[91m', ''))), 'blue') + colorize('¦', 'blue'))
+        print(colorize('    Startup    : ', 'white') + startup_status)
         
         antivm_status = colorize('ENABLED', 'green') if self.config['anti_vm'] else colorize('DISABLED', 'red')
-        print(colorize('    ¦', 'blue') + colorize(' Anti-VM    : ', 'white') + antivm_status + colorize(' ' * (42 - len(antivm_status.replace('\033[0m', '').replace('\033[92m', '').replace('\033[91m', ''))), 'blue') + colorize('¦', 'blue'))
+        print(colorize('    Anti-VM    : ', 'white') + antivm_status)
         
         fake_status = colorize('ENABLED', 'green') if self.config['fake_error']['enabled'] else colorize('DISABLED', 'red')
-        print(colorize('    ¦', 'blue') + colorize(' Fake Error : ', 'white') + fake_status + colorize(' ' * (42 - len(fake_status.replace('\033[0m', '').replace('\033[92m', '').replace('\033[91m', ''))), 'blue') + colorize('¦', 'blue'))
+        print(colorize('    Fake Error : ', 'white') + fake_status)
         
         output_name = self.config['output_name'] + '.exe'
-        print(colorize('    ¦', 'blue') + colorize(' Output     : ', 'white') + colorize(output_name, 'yellow') + colorize(' ' * (42 - len(output_name)), 'blue') + colorize('¦', 'blue'))
+        print(colorize('    Output     : ', 'white') + colorize(output_name, 'yellow'))
         
-        print(colorize('    +---------------------------------------------------------+', 'blue'))
+        print(colorize('    --------------------------------------------------', 'blue'))
 
     def set_webhook(self):
-        print(colorize('\n    +---------------------------------------------------------+', 'blue'))
-        print(colorize('    ¦', 'blue') + colorize(' SET WEBHOOK', 'bold') + colorize('                                          ¦', 'blue'))
-        print(colorize('    ---------------------------------------------------------+', 'blue'))
+        print(colorize('\n    --------------------------------------------------', 'blue'))
+        print(colorize('    SET WEBHOOK', 'bold'))
+        print(colorize('    --------------------------------------------------', 'blue'))
         url = input(colorize('    Discord Webhook URL: ', 'cyan')).strip()
         if url.startswith('http') and 'discord' in url:
             self.config['webhook'] = url
@@ -216,9 +218,9 @@ class Builder:
             os.system('cls' if os.name == 'nt' else 'clear')
             self.print_banner()
             print()
-            print(colorize('    +---------------------------------------------------------+', 'blue'))
-            print(colorize('    ¦', 'blue') + colorize(' FAKE ERROR CONFIGURATION', 'bold') + colorize('                            ¦', 'blue'))
-            print(colorize('    +---------------------------------------------------------+', 'blue'))
+            print(colorize('    --------------------------------------------------', 'blue'))
+            print(colorize('    FAKE ERROR CONFIGURATION', 'bold'))
+            print(colorize('    --------------------------------------------------', 'blue'))
             print()
             status = colorize('ENABLED', 'green') if self.config['fake_error']['enabled'] else colorize('DISABLED', 'red')
             fe = self.config['fake_error']
