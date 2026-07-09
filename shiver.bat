@@ -9,16 +9,15 @@ cd /d "%~dp0"
 chcp 65001 > nul
 cls
 echo.
-echo                 _____ _     _ _    ____  _          _ _
-echo                / ____| |   (_) |  / ___|| |__   ___| | |
-echo               | (___ | |__  _| |_ \___ \| '_ \ / _ \ | |
-echo                \___ \| '_ \| | __| ___) | | | |  __/ | |
-echo                ____) | | | | | |_ |____/|_| |_|\___|_|_|
-echo               |_____/|_| |_|_|\__|
+echo                 SSSSS  H   H  IIIII  V   V  EEEEE  RRRR
+echo                 S      H   H    I    V   V  E      R   R
+echo                 SSS    HHHHH    I    V   V  EEE    RRRR
+echo                    S   H   H    I     V V   E      R  R
+echo                 SSSS   H   H  IIIII    V    EEEEE  R   R
 echo.
 echo            ==================================================
 echo              SHIVER - ULTIMATE MULTI-STEALER v2.0
-echo              44 Browsers | Discord | Crypto | Gaming
+echo              45 Browsers | Discord | Crypto | Gaming
 echo            ==================================================
 echo.
 echo            ==================================================
@@ -82,23 +81,22 @@ echo                       SHIVER STEALER v2.0
 echo            ==================================================
 echo.
 echo             Features:
-echo             * 44 Browser Support (Chrome/Firefox/Opera/Edge etc.)
-echo             * Discord Token Stealing (17+ clients including Vesktop)
-echo             * Crypto Wallet Stealing (MetaMask, Exodus, 60+ wallets)
+echo             * 45 Browser Support (Chrome/Firefox/Opera/Edge etc.)
+echo             * Discord Token Stealing (19+ clients)
+echo             * Crypto Wallet Stealing (60+ Web3, Exodus, Ledger)
 echo             * Gaming: Steam, Minecraft, Roblox
-echo             * Instagram Session Stealing
 echo             * Telegram Session Stealing
 echo             * System Info / Screenshot / Wi-Fi
 echo             * Full File System Search (interesting files)
 echo             * Anti-VM / Anti-Debug
 echo             * Custom Fake Error Message
 echo             * Startup Persistence
-echo             * Code Obfuscation (marshal+zlib+base64)
+echo             * Multi-Layer Code Obfuscation
 echo             * Clean Discord Webhook Output
 echo             * Browser History Extraction
 echo             * SSH Connections Grabbing (PuTTY, KiTTY, WinSCP)
 echo             * Web3 Wallet Extensions (60+ wallets)
-echo.
+echo.          
 echo            ==================================================
 pause
 goto menu

