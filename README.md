@@ -299,7 +299,7 @@ The interactive builder menu provides the following configuration options:
 ### Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/shiver-stealer.git
+git clone https://github.com/yuwxd/shiver-stealer.git
 cd shiver-stealer
 pip install -r requirements.txt
 ```
@@ -416,7 +416,7 @@ shiver-stealer/
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome. Feel free to check the [issues page](https://github.com/YOUR_USERNAME/shiver-stealer/issues).
+Contributions, issues, and feature requests are welcome. Feel free to check the [issues page](https://github.com/yuwxd/shiver-stealer/issues).
 
 ## License
 
