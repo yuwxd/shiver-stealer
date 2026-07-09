@@ -5,8 +5,8 @@ import subprocess
 import time
 import socket
 import uuid
-import psutil
 import threading
+import ctypes
 from . import utils
 try:
     from PIL import ImageGrab
@@ -25,8 +25,8 @@ class SystemInfo:
         self.info['windows_version'] = self.get_windows_version()
         self.info['arch'] = platform.machine()
         self.info['processor'] = platform.processor()
-        self.info['cpu_count'] = psutil.cpu_count(logical=True) if hasattr(psutil, 'cpu_count') else 'N/A'
-        self.info['cpu_physical'] = psutil.cpu_count(logical=False) if hasattr(psutil, 'cpu_count') else 'N/A'
+        self.info['cpu_count'] = os.cpu_count() or 'N/A'
+        self.info['cpu_physical'] = self._get_physical_cpu_count()
         self.info['ram'] = self.get_ram_info()
         self.info['hwid'] = self.get_hwid()
         self.info['uuid'] = str(uuid.UUID(int=uuid.getnode()))
@@ -94,12 +94,46 @@ class SystemInfo:
         except:
             return platform.platform()
 
+    def _get_physical_cpu_count(self):
+        try:
+            import winreg
+            key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r'HARDWARE\DESCRIPTION\System\CentralProcessor')
+            count = 0
+            try:
+                i = 0
+                while True:
+                    winreg.EnumKey(key, i)
+                    count += 1
+                    i += 1
+            except:
+                pass
+            winreg.CloseKey(key)
+            return count or 'N/A'
+        except:
+            return 'N/A'
+
     def get_ram_info(self):
         try:
-            mem = psutil.virtual_memory()
-            total_gb = mem.total / (1024**3)
-            used_gb = mem.used / (1024**3)
-            return '{:.1f}GB / {:.1f}GB ({}%)'.format(used_gb, total_gb, mem.percent)
+            kernel32 = ctypes.windll.kernel32
+            class MEMORYSTATUSEX(ctypes.Structure):
+                _fields_ = [
+                    ('dwLength', ctypes.c_ulong),
+                    ('dwMemoryLoad', ctypes.c_ulong),
+                    ('ullTotalPhys', ctypes.c_ulonglong),
+                    ('ullAvailPhys', ctypes.c_ulonglong),
+                    ('ullTotalPageFile', ctypes.c_ulonglong),
+                    ('ullAvailPageFile', ctypes.c_ulonglong),
+                    ('ullTotalVirtual', ctypes.c_ulonglong),
+                    ('ullAvailVirtual', ctypes.c_ulonglong),
+                    ('ullAvailExtendedVirtual', ctypes.c_ulonglong),
+                ]
+            mem = MEMORYSTATUSEX()
+            mem.dwLength = ctypes.sizeof(mem)
+            kernel32.GlobalMemoryStatusEx(ctypes.byref(mem))
+            total_gb = mem.ullTotalPhys / (1024**3)
+            used_gb = (mem.ullTotalPhys - mem.ullAvailPhys) / (1024**3)
+            pct = mem.dwMemoryLoad
+            return '{:.1f}GB / {:.1f}GB ({}%)'.format(used_gb, total_gb, pct)
         except:
             return 'N/A'
 
@@ -108,17 +142,36 @@ class SystemInfo:
 
     def get_boot_time(self):
         try:
-            bt = psutil.boot_time()
+            bt = self._get_boot_timestamp()
             return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(bt))
         except:
             return 'Unknown'
 
+    def _get_boot_timestamp(self):
+        try:
+            output = subprocess.check_output('wmic os get lastbootuptime', shell=True, stderr=subprocess.DEVNULL).decode(errors='ignore')
+            for line in output.split('\n'):
+                line = line.strip()
+                if line and line.isdigit() and len(line) >= 14:
+                    import datetime
+                    dt = datetime.datetime.strptime(line[:14], '%Y%m%d%H%M%S')
+                    return dt.timestamp()
+        except:
+            pass
+        try:
+            kernel32 = ctypes.windll.kernel32
+            uptime_ms = ctypes.c_ulonglong(0)
+            kernel32.GetTickCount64(ctypes.byref(uptime_ms))
+            return time.time() - (uptime_ms.value / 1000)
+        except:
+            return time.time()
+
     def get_uptime(self):
         try:
-            uptime_seconds = int(time.time() - psutil.boot_time())
+            uptime_seconds = int(time.time() - self._get_boot_timestamp())
             days = uptime_seconds // 86400
             hours = (uptime_seconds % 86400) // 3600
-            minutes = (uptime_seconds % 3600) // 60
+            minutes = (uptime_seconds % 86400 % 3600) // 60
             return '{}d {}h {}m'.format(days, hours, minutes)
         except:
             return 'Unknown'
@@ -200,7 +253,18 @@ class SystemInfo:
 
     def get_running_processes(self):
         try:
-            return [p.info for p in psutil.process_iter(['pid', 'name'])]
+            output = subprocess.check_output('tasklist /fo csv /nh', shell=True, stderr=subprocess.DEVNULL).decode(errors='ignore')
+            processes = []
+            for line in output.split('\n'):
+                line = line.strip()
+                if line and ',' in line:
+                    parts = line.split(',')
+                    if len(parts) >= 2:
+                        name = parts[0].strip('" ')
+                        pid = parts[1].strip('" ')
+                        if name and pid:
+                            processes.append({'name': name, 'pid': pid})
+            return processes
         except:
             return []
 

